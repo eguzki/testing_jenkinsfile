@@ -11,8 +11,8 @@ pipeline {
         stage('Update upstream branch') {
             steps {
                 stash includes: 'credential-helper.sh', name: 'credentialhelper'
-                sh 'ls -al'
-                sh 'git status'
+                // Wipe the workspace so we are building completely clean
+                deleteDir()
                 git credentialsId: 'github-token-rh-eguzki', url: 'https://github.com/eguzki/testing_downstream', branch: 'upstream'
                 unstash 'credentialhelper'
                 sh 'git config credential.helper "/bin/bash ' + env.WORKSPACE + '/credential-helper.sh"'
