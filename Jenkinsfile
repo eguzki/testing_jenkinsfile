@@ -10,10 +10,7 @@ pipeline {
     stages {
         stage('Update upstream branch') {
             steps {
-                sh 'ls -al'
-                sh 'pwd'
-                echo env.WORKSPACE + '/credential-helper.sh'
-                stash includes: env.WORKSPACE + '/credential-helper.sh', name: 'credentialhelper'
+                stash includes: 'credential-helper.sh', name: 'credentialhelper'
                 git credentialsId: 'github-token-rh-eguzki', url: 'https://github.com/eguzki/testing_downstream', branch: 'upstream'
                 unstash 'credentialhelper'
                 sh 'git config credential.helper "/bin/bash ' + env.WORKSPACE + '/credential-helper.sh"'
