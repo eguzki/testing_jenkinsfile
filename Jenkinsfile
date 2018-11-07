@@ -12,6 +12,8 @@ pipeline {
             steps {
                 git credentialsId: 'github-token-rh-eguzki', url: 'https://github.com/eguzki/testing_downstream', branch: 'upstream'
                 sh 'git config credential.helper "/bin/bash ' + env.WORKSPACE + '/credential-helper.sh"'
+                sh "git remote -vv"
+                sh "git branch -vv"
                 sh "git remote add upstream $UPSTREAM_URL"
                 sh "git remote -vv"
                 sh "git fetch upstream"
