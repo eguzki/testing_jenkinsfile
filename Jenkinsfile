@@ -27,14 +27,19 @@ pipeline {
                                   credentialsId: 'github-token-rh-eguzki',
                                   usernameVariable: 'GIT_USERNAME',
                                   passwordVariable: 'GIT_PASSWORD']]) {
-                  sh "git push origin upstream"
+                    sh "git push origin upstream"
                 }
             }
         }
         stage('Rebase product branch') {
             steps {
                 sh "git checkout product"
-                sh "git rebase upstream"
+                withCredentials([[$class: 'UsernamePasswordMultiBinding',
+                                  credentialsId: 'github-token-rh-eguzki',
+                                  usernameVariable: 'GIT_USERNAME',
+                                  passwordVariable: 'GIT_PASSWORD']]) {
+                    sh "git rebase upstream"
+                }
             }
         }
         stage('Tests') {
@@ -48,7 +53,7 @@ pipeline {
                                   credentialsId: 'github-token-rh-eguzki',
                                   usernameVariable: 'GIT_USERNAME',
                                   passwordVariable: 'GIT_PASSWORD']]) {
-                  sh "git push --force origin product"
+                    sh "git push --force origin product"
                 }
             }
         }
@@ -60,7 +65,7 @@ pipeline {
                                   credentialsId: 'github-token-rh-eguzki',
                                   usernameVariable: 'GIT_USERNAME',
                                   passwordVariable: 'GIT_PASSWORD']]) {
-                  sh "git push --force origin master"
+                    sh "git push --force origin master"
                 }
             }
         }
