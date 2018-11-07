@@ -1,12 +1,21 @@
+#!/usr/bin/env groovy
+
 pipeline {
-    agent any 
+    agent any
+
+    environment {
+        UPSTREAM_URL = 'https://github.com/eguzki/testing_upstream'
+    }
+
     stages {
-        stage('Stage 1') {
+        stage('Update upstream branch') {
             steps {
-                git credentialsId: 'github-token-rh-eguzki', url: 'https://github.com/3scale/backend'
-                echo 'Hello world!' 
-                sh "git status"
-                sh "ls -al"
+                git credentialsId: 'github-token-rh-eguzki', url: 'https://github.com/eguzki/testing_downstream', branch: 'upstream'
+                sh "git remote add upstream $UPSTREAM_URL"
+                sh "git remote -vv"
+                sh "git fetch upstream"
+                sh "git pull upstream master"
+                sh "git push origin upstream"
             }
         }
     }
