@@ -48,7 +48,7 @@ pipeline {
                                   credentialsId: 'github-token-rh-eguzki',
                                   usernameVariable: 'GIT_USERNAME',
                                   passwordVariable: 'GIT_PASSWORD']]) {
-                  sh "git push --force-with-lease origin product"
+                  sh "git push --force origin product"
                 }
             }
         }
@@ -60,7 +60,7 @@ pipeline {
                                   credentialsId: 'github-token-rh-eguzki',
                                   usernameVariable: 'GIT_USERNAME',
                                   passwordVariable: 'GIT_PASSWORD']]) {
-                  sh "git push --force-with-lease origin master"
+                  sh "git push --force origin master"
                 }
             }
         }
