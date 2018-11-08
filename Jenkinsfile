@@ -20,6 +20,8 @@ pipeline {
                 git credentialsId: 'github-token-rh-eguzki', url: 'https://github.com/eguzki/testing_downstream', branch: 'upstream'
                 unstash 'credentialhelper'
                 sh 'git config credential.helper "/bin/bash ' + env.WORKSPACE + '/credential-helper.sh"'
+                sh 'git config user.name \'Jenkins Build Server\''
+                sh 'git config user.email backend@3scale.com'
                 sh "git remote add upstream $UPSTREAM_URL"
                 sh "git fetch upstream"
                 sh "git pull upstream master"
@@ -34,12 +36,7 @@ pipeline {
         stage('Rebase product branch') {
             steps {
                 sh "git checkout product"
-                withCredentials([[$class: 'UsernamePasswordMultiBinding',
-                                  credentialsId: 'github-token-rh-eguzki',
-                                  usernameVariable: 'GIT_USERNAME',
-                                  passwordVariable: 'GIT_PASSWORD']]) {
-                    sh "git rebase upstream"
-                }
+                sh "git rebase upstream"
             }
         }
         stage('Tests') {
